@@ -10,6 +10,7 @@ let bodyParser = require("body-parser");
 let app = express();
 const { mysqlPool } = require("./db/utils");
 const { isLoggedIn } = require("./utils/middelware");
+const { webbaseurl } = require("./utils/config");
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -28,7 +29,7 @@ app.use(session({
   store: new MySQLStore({ pool: mysqlPool, secret: 'KDYS73VDZEpGHJG8ghgF(', })
 }));
 app.use(cors({
-  origin: 'http://localhost:8080',
+  origin: webbaseurl.slice(0, -2),
   credentials: true
 }));
 app.use(passport.initialize());
