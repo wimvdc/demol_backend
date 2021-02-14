@@ -10,11 +10,16 @@ router.get('/', isLoggedIn, async (req, res, next) => {
 
 router.post('/', isLoggedIn, async (req, res, next) => {
   try {
-    await db.insertGroup(req.body.name, req.body.public ? 1 : 0, req.user.uuid);
-    res.status(201).end();
+    const result = await db.getAdminCount(req.user.uuid);
+    if (result.length >= 5) {
+      res.status(400).json({ code: 7600 });
+    } else {
+      await db.insertGroup(req.body.name, req.body.public ? 1 : 0, req.user.uuid);
+      res.status(201).end();
+    }
   } catch (err) {
     console.error(err);
-    res.status(500).end();
+    res.status(500).json({ code: err.errno });
   }
 });
 

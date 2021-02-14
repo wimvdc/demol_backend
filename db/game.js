@@ -11,7 +11,7 @@ exports.upsertGuessForUser = function (molid, round, userid) {
 };
 
 exports.getGuessForUser = function (round, userid) {
-    return db.executeQuery(`SELECT * FROM guesses 
+    return db.executeQuery(`SELECT mol_uuid FROM guesses 
         WHERE round = ? and user_uuid = ?`
         , [round, userid]);
 };

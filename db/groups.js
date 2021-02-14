@@ -19,12 +19,18 @@ exports.insertUserinGroup = function (groupUuid, userUuid) {
 };
 
 exports.getAllGroups = function () {
-    return db.executeQuery(`SELECT name, public, admin_uuid, share_code, uuid FROM groupz;`);
+    return db.executeQuery(`SELECT name, public,  IF(public = 1, uuid, '') uuid 
+        FROM groupz ORDER by name;`);
 };
 
 exports.getGroupByUuid = function (uuid) {
     return db.executeQuery(`SELECT name, public, admin_uuid, share_code, uuid FROM groupz 
     WHERE uuid = ?;`, [uuid]);
+};
+
+exports.getAdminCount = function (adminid) {
+    return db.executeQuery(`SELECT id FROM groupz 
+    WHERE admin_uuid = ?;`, [adminid]);
 };
 
 exports.getGroupByInviteCode = function (inviteCode) {
