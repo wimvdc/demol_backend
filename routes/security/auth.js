@@ -6,7 +6,7 @@ router.get('/v1/facebook', passport.authenticate('facebook'));
 
 router.get('/v1/facebook/callback',
   passport.authenticate('facebook', {
-    successRedirect: '/',
+    successRedirect: webbaseurl + '/',
     failureRedirect: '/login'
   }));
 
