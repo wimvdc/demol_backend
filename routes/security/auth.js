@@ -19,7 +19,7 @@ router.get('/v1/google/callback',
   });
 
 router.get('/v1/check', function (req, res) {
-  req.user ? res.send(200) : res.send(401);
+  req.user ? res.sendStatus(200) : res.sendStatus(401);
 });
 
 router.get('/v1/logout', function (req, res) {

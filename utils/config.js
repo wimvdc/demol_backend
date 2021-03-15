@@ -39,7 +39,7 @@ module.exports = {
 
     },
     getCurrentRound: () => {
-        let round = currentWeekNumber() - 2;
+        let round = currentWeekNumber() - 10;
         let now = new Date();
         if (now.getDay() == 0) {
             if (now.getHours() > 21) {
