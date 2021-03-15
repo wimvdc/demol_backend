@@ -10,7 +10,7 @@ router.get('/round', (req, res, next) => {
 });
 
 router.get('/info', async (req, res, next) => {
-    let result = await db.getDetailedGuessForUser(getCurrentRound(), req.user.uuid);
+    let result = []; //fix
     let user = await getUserByUuid(req.user.uuid);
     let groups = await getMyGroups(req.user.uuid);
     res.json({
@@ -38,15 +38,17 @@ router.get('/mol', async (req, res, next) => {
 
 router.post('/mol', async (req, res, next) => {
     try {
-        let consumedPoints = req.body.reduce((acc, item) => acc + item.points, 0);
+        let consumedPoints = req.body.reduce((acc, item) => acc + (item.points >= 0 ? item.points : 0), 0);
         let spendablePoints = await db.getSpendablePoints(req.user.uuid);
         spendablePoints = spendablePoints[0].available_points
+        console.log(consumedPoints + " - " + spendablePoints)
         if (consumedPoints > spendablePoints) {
             res.status(400).json({ code: 310 });
         } else {
             await db.deletePointGuessForUser(getCurrentRound(), req.user.uuid);
             req.body.forEach(mol => {
-                db.upsertPointGuessForUser(mol.uuid, getCurrentRound(), req.user.uuid, mol.points);
+                if (mol.points >= 0)
+                    db.upsertPointGuessForUser(mol.uuid, getCurrentRound(), req.user.uuid, mol.points);
             });
             res.status(200).end();
         }

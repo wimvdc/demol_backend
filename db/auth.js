@@ -5,7 +5,7 @@ exports.getUserIdByOpenId = function (openid) {
 };
 
 exports.getUserByUuid = function (uuid) {
-    return db.executeQuery(`SELECT firstName FROM users WHERE uuid = ?;`, [uuid]);
+    return db.executeQuery(`SELECT firstName firstname FROM users WHERE uuid = ?;`, [uuid]);
 };
 
 exports.insertUser = function (openid, firstname, lastname, channel) {

@@ -39,7 +39,7 @@ exports.getGroupByInviteCode = function (inviteCode) {
 };
 
 exports.getUsersInGroup = function (uuid) {
-    return db.executeQuery(`SELECT firstName firstname, lastName lastname FROM users_in_groupz uig, users u 
+    return db.executeQuery(`SELECT firstName firstname, UPPER(LEFT (lastName, 1)) lastname, available_points availablepoints FROM users_in_groupz uig, users u 
     WHERE uig.user_uuid = u.uuid and uig.group_uuid = ?;`, [uuid]);
 };
 

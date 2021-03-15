@@ -1,6 +1,6 @@
 const db = require("./utils");
 
-/* start old school */
+/* old school logic
 exports.upsertGuessForUser = function (molid, round, userid) {
     return db.executeQuery(`INSERT INTO guesses
         (mol_uuid, round, user_uuid) VALUES (?,?,?) 
@@ -22,7 +22,7 @@ exports.getDetailedGuessForUser = function (round, userid) {
         WHERE round = ? and user_uuid = ? and mol_uuid = c.uuid;`
         , [round, userid]);
 };
-/* end old school */
+*/
 
 exports.getPointGuessForUser = function (round, userid) {
     return db.executeQuery(`SELECT c.name, c.isMol, c.isOut, p.points 
