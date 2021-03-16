@@ -19,8 +19,11 @@ exports.insertUserinGroup = function (groupUuid, userUuid) {
 };
 
 exports.getAllGroups = function () {
-    return db.executeQuery(`SELECT name, public,  IF(public = 1, uuid, '') uuid 
-        FROM groupz ORDER by name;`);
+    //return db.executeQuery(`SELECT name, public,  IF(public = 1, uuid, ''), uuid 
+    //    FROM groupz ORDER by name;`);
+    return db.executeQuery(`SELECT name, uuid,
+                             (SELECT COUNT(id) FROM users_in_groupz u WHERE g.uuid = u.group_uuid) members
+                            FROM groupz g;`);
 };
 
 exports.getGroupByUuid = function (uuid) {
