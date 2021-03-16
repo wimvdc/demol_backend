@@ -24,6 +24,13 @@ exports.getDetailedGuessForUser = function (round, userid) {
 };
 */
 
+exports.getSpendPointsForUser = function (round, userid) {
+    return db.executeQuery(`SELECT SUM(p.points) spend
+        FROM point_guesses p 
+        WHERE round = ? and user_uuid = ?`
+        , [round, userid]);
+};
+
 exports.getPointGuessForUser = function (round, userid) {
     return db.executeQuery(`SELECT c.name, c.isMol, c.isOut, p.points 
         FROM point_guesses p, candidates c 

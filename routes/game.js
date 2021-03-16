@@ -10,14 +10,15 @@ router.get('/round', (req, res, next) => {
 });
 
 router.get('/info', async (req, res, next) => {
-    let result = []; //fix
+    let spend = await db.getSpendPointsForUser(getCurrentRound(),req.user.uuid);
+    spend = spend[0].spend;
+    let spendable = await db.getSpendablePoints(req.user.uuid);
+    spendable = spendable[0].available_points;
     let user = await getUserByUuid(req.user.uuid);
     let groups = await getMyGroups(req.user.uuid);
     res.json({
         round: getCurrentRound(),
-        voted: result.length == 1,
-        vote: result.length == 1 ?
-            result[0] : null,
+        pointsleft: spendable - spend,
         user: user[0],
         groups
     });
