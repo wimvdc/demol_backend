@@ -30,7 +30,7 @@ router.get('/:groupid', isLoggedIn, async (req, res, next) => {
     res.status(404).end();
   else {
     let group = result[0];
-    group.share = `${serverurl}/v1/groups/invite/${group.share_code}`;
+    group.share = `${webbaseurl}/group/invite/${group.share_code}`;
     delete group.share_code;
     res.json(result[0]);
   }
@@ -60,12 +60,12 @@ router.get('/invite/:invitecode', async (req, res, next) => {
   const invitecode = req.params.invitecode;
   console.log(req.path)
   if (!req.user?.uuid) {
-    res.redirect(`${webbaseurl}/login?referer=${serverurl}${req.path}`)
+    res.redirect(`${webbaseurl}/login?referer=${webbaseurl}${req.path}`)
   }
   const groups = await db.getGroupByInviteCode(invitecode);
   if (groups.length == 1) {
     try {
-      const result = await db.insertUserinGroup(groups[0].uuid, req.user.uuid);
+      await db.insertUserinGroup(groups[0].uuid, req.user.uuid);
       res.redirect(`${webbaseurl}/groups/${groups[0].uuid}`)
     } catch (error) {
       if (error.errno == 1062)
@@ -78,21 +78,5 @@ router.get('/invite/:invitecode', async (req, res, next) => {
   }
 
 });
-
-/*
-    db.getGroupByCode(req.params.code).then(group => {
-      let groupId = group[0].id;
-      let userId = req.user.molid;
-      db.insertUserIntoGroup(userId, groupId).then(() => {
-        res.render("pages/index.ejs", {
-          partialName: "../partials/groups/invite",
-          items: {
-            group: group[0]
-          },
-          page: req.active_page
-        });
-      });
-    });
-*/
 
 module.exports = router;
