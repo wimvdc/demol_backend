@@ -1,6 +1,6 @@
 let express = require('express');
 let router = express.Router();
-const { getCurrentRound } = require("../utils/config");
+const { getCurrentRound, isNormalVotingEnabled } = require("../utils/config");
 const db = require('../db/game');
 const { getUserByUuid } = require('../db/auth');
 const { getMyGroups } = require('../db/groups');
@@ -10,18 +10,30 @@ router.get('/round', (req, res, next) => {
 });
 
 router.get('/info', async (req, res, next) => {
-    let spend = await db.getSpendPointsForUser(getCurrentRound(),req.user.uuid);
+    let format = req.query.format;
+    let spend = await db.getSpendPointsForUser(getCurrentRound(), req.user.uuid);
     spend = spend[0].spend;
     let spendable = await db.getSpendablePoints(req.user.uuid);
     spendable = spendable[0].available_points;
-    let user = await getUserByUuid(req.user.uuid);
-    let groups = await getMyGroups(req.user.uuid);
-    res.json({
+    let response = {
         round: getCurrentRound(),
-        pointsleft: spendable - spend,
-        user: user[0],
-        groups
-    });
+        spend,
+        spendable,
+        voteopen: isNormalVotingEnabled(),
+    }
+    if (format === "full") {
+        let user = await getUserByUuid(req.user.uuid);
+        let groups = await getMyGroups(req.user.uuid);
+        response = {
+            round: getCurrentRound(),
+            spend,
+            spendable,
+            user: user[0],
+            voteopen: isNormalVotingEnabled(),
+            groups
+        };
+    }
+    res.json(response);
 });
 
 router.get('/mol', async (req, res, next) => {
@@ -39,6 +51,9 @@ router.get('/mol', async (req, res, next) => {
 
 router.post('/mol', async (req, res, next) => {
     try {
+        if (!isNormalVotingEnabled()) {
+            res.status(400).json({ code: 420 });
+        }
         let consumedPoints = req.body.reduce((acc, item) => acc + (item.points >= 0 ? item.points : 0), 0);
         let spendablePoints = await db.getSpendablePoints(req.user.uuid);
         spendablePoints = spendablePoints[0].available_points

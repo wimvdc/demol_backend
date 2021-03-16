@@ -47,6 +47,18 @@ module.exports = {
             }
         }
         return round;
+    },
+    getLastRound: () => {
+        return 7;
+    },
+    isNormalVotingEnabled: () => {
+        let now = new Date();
+        if (now.getDay() == 0) {
+            if (now.getHours() == 20 || now.getHours() == 21) {
+                return false;
+            }
+        }
+        return module.exports.getCurrentRound() < module.exports.getLastRound();
     }
 };
 
