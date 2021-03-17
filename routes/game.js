@@ -57,7 +57,6 @@ router.post('/mol', async (req, res, next) => {
         let consumedPoints = req.body.reduce((acc, item) => acc + (item.points >= 0 ? item.points : 0), 0);
         let spendablePoints = await db.getSpendablePoints(req.user.uuid);
         spendablePoints = spendablePoints[0].available_points
-        console.log(consumedPoints + " - " + spendablePoints)
         if (consumedPoints > spendablePoints) {
             res.status(400).json({ code: 310 });
         } else {

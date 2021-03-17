@@ -35,7 +35,7 @@ module.exports = {
         clientID: process.env.FB_AUTH_CLIENT_ID,
         clientSecret: process.env.FB_AUTH_CLIENT_SECRET,
         callbackURL: process.env.FB_AUTH_CALLBACK,
-        profileFields: ['id', 'displayName', 'emails']
+        profileFields: ['id', 'displayName']
 
     },
     getCurrentRound: () => {
@@ -58,7 +58,7 @@ module.exports = {
                 return false;
             }
         }
-        return module.exports.getCurrentRound() < module.exports.getLastRound();
+        return 0 < module.exports.getCurrentRound() && module.exports.getCurrentRound() < module.exports.getLastRound();
     }
 };
 
