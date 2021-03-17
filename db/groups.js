@@ -18,12 +18,13 @@ exports.insertUserinGroup = function (groupUuid, userUuid) {
     `, [groupUuid, userUuid]);
 };
 
-exports.getAllGroups = function () {
+exports.getAllGroups = function (userUuid) {
     //return db.executeQuery(`SELECT name, public,  IF(public = 1, uuid, ''), uuid 
     //    FROM groupz ORDER by name;`);
-    return db.executeQuery(`SELECT name, uuid,
-                             (SELECT COUNT(id) FROM users_in_groupz u WHERE g.uuid = u.group_uuid) members
-                            FROM groupz g;`);
+    return db.executeQuery(`SELECT name, 
+                (SELECT COUNT(id) FROM users_in_groupz u WHERE uuid = group_uuid) members, 
+                (SELECT group_uuid FROM users_in_groupz WHERE uuid = group_uuid and user_uuid = ?) uuid
+                    FROM groupz ;`, [userUuid]);
 };
 
 exports.getGroupByUuid = function (uuid) {

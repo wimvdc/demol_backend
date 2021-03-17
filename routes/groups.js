@@ -4,8 +4,8 @@ const { webbaseurl } = require("../utils/config");
 let db = require('../db/groups');
 
 router.get('/', isLoggedIn, async (req, res, next) => {
-  const result = await db.getAllGroups();
-  res.json(result.map(({ admin_uuid, ...rest }) => rest));
+  const result = await db.getAllGroups(req.user.uuid);
+  res.json(result);
 });
 
 router.post('/', isLoggedIn, async (req, res, next) => {
@@ -67,10 +67,10 @@ router.get('/invite/:invitecode', async (req, res, next) => {
   if (groups.length == 1) {
     try {
       await db.insertUserinGroup(groups[0].uuid, req.user.uuid);
-      res.redirect(`${webbaseurl}/groups/${groups[0].uuid}`)
+      res.json({ uuid: groups[0].uuid });
     } catch (error) {
       if (error.errno == 1062)
-        res.status(200).end();
+        res.json({ uuid: groups[0].uuid });
       else
         res.status(500).end();
     }
