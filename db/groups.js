@@ -28,7 +28,7 @@ exports.getAllGroups = function (userUuid) {
 };
 
 exports.getGroupByUuid = function (uuid) {
-    return db.executeQuery(`SELECT name, public, admin_uuid, share_code, uuid FROM groupz 
+    return db.executeQuery(`SELECT name, uuid FROM groupz 
     WHERE uuid = ?;`, [uuid]);
 };
 

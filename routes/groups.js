@@ -31,7 +31,7 @@ router.get('/:groupid', isLoggedIn, async (req, res, next) => {
     res.status(404).end();
   else {
     let group = result[0];
-    group.share = `${webbaseurl}/group/invite/${group.share_code}`;
+    group.share = `${webbaseurl}/group/invite/${group.uuid}`;
     delete group.share_code;
     res.json(result[0]);
   }
@@ -46,7 +46,7 @@ router.get('/:groupid/users', isLoggedIn, async (req, res, next) => {
     res.json(result);
 });
 
-router.put('/:groupid', isLoggedIn, async (req, res, next) => {
+/*router.put('/:groupid', isLoggedIn, async (req, res, next) => {
   try {
     const groupid = req.params.groupid;
     await db.updateGroup(groupid, req.body.name, req.body.public ? 1 : 0);
@@ -55,7 +55,7 @@ router.put('/:groupid', isLoggedIn, async (req, res, next) => {
     console.error(err);
     res.status(500).end();
   }
-});
+});*/
 
 router.get('/invite/:invitecode', async (req, res, next) => {
   const invitecode = req.params.invitecode;
@@ -63,7 +63,7 @@ router.get('/invite/:invitecode', async (req, res, next) => {
   if (!req.user?.uuid) {
     res.redirect(`${webbaseurl}/login?referer=${webbaseurl}${req.path}`)
   }
-  const groups = await db.getGroupByInviteCode(invitecode);
+  const groups = await db.getGroupByUuid(invitecode);
   if (groups.length == 1) {
     try {
       await db.insertUserinGroup(groups[0].uuid, req.user.uuid);
