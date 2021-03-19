@@ -8,7 +8,7 @@ router.get('/', isLoggedIn, async (req, res, next) => {
   res.json(result);
 });
 
-router.post('/', isLoggedIn, async (req, res, next) => {
+router.post('/', async (req, res, next) => {
   try {
     const result = await db.getAdminCount(req.user.uuid);
     if (result.length >= 5) {
@@ -24,7 +24,7 @@ router.post('/', isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get('/:groupid', isLoggedIn, async (req, res, next) => {
+router.get('/:groupid', async (req, res, next) => {
   const groupid = req.params.groupid;
   const result = await db.getGroupByUuid(groupid);
   if (result.length != 1)
@@ -37,7 +37,7 @@ router.get('/:groupid', isLoggedIn, async (req, res, next) => {
   }
 });
 
-router.get('/:groupid/users', isLoggedIn, async (req, res, next) => {
+router.get('/:groupid/users', async (req, res, next) => {
   const groupid = req.params.groupid;
   const result = await db.getUsersInGroup(groupid);
   if (result.length === 0)
@@ -46,7 +46,7 @@ router.get('/:groupid/users', isLoggedIn, async (req, res, next) => {
     res.json(result);
 });
 
-/*router.put('/:groupid', isLoggedIn, async (req, res, next) => {
+/*router.put('/:groupid', async (req, res, next) => {
   try {
     const groupid = req.params.groupid;
     await db.updateGroup(groupid, req.body.name, req.body.public ? 1 : 0);
