@@ -40,7 +40,7 @@ app.use('/v1/groups', require('./routes/groups'));
 app.use('/v1/users', isLoggedIn, require('./routes/users'));
 app.use('/v1/candidates', isLoggedIn, require('./routes/candidates'));
 app.use('/v1/game', isLoggedIn, require('./routes/game'));
-app.use('/v1/score', isLoggedIn, require('./routes/score'));
+//app.use('/v1/score', isLoggedIn, require('./routes/score'));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
