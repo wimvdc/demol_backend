@@ -53,19 +53,20 @@ router.post('/mol', async (req, res, next) => {
     try {
         if (!isNormalVotingEnabled()) {
             res.status(400).json({ code: 420 });
-        }
-        let consumedPoints = req.body.reduce((acc, item) => acc + (item.points >= 0 ? item.points : 0), 0);
-        let spendablePoints = await db.getSpendablePoints(req.user.uuid);
-        spendablePoints = spendablePoints[0].available_points
-        if (consumedPoints > spendablePoints) {
-            res.status(400).json({ code: 310 });
         } else {
-            await db.deletePointGuessForUser(getCurrentRound(), req.user.uuid);
-            req.body.forEach(mol => {
-                if (mol.points >= 0)
-                    db.upsertPointGuessForUser(mol.uuid, getCurrentRound(), req.user.uuid, mol.points);
-            });
-            res.status(200).end();
+            let consumedPoints = req.body.reduce((acc, item) => acc + (item.points >= 0 ? item.points : 0), 0);
+            let spendablePoints = await db.getSpendablePoints(req.user.uuid);
+            spendablePoints = spendablePoints[0].available_points
+            if (consumedPoints > spendablePoints) {
+                res.status(400).json({ code: 310 });
+            } else {
+                await db.deletePointGuessForUser(getCurrentRound(), req.user.uuid);
+                req.body.forEach(mol => {
+                    if (mol.points >= 0)
+                        db.upsertPointGuessForUser(mol.uuid, getCurrentRound(), req.user.uuid, mol.points);
+                });
+                res.status(200).end();
+            }
         }
     } catch (err) {
         console.error(err);
