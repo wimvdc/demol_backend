@@ -16,7 +16,7 @@ module.exports = {
     webbaseurl: process.env.WEB_BASE_URL,
     serverurl: process.env.SERVER_URL,
     databaseUnsafe: {
-        connectionLimit: 10,
+        connectionLimit: 20,
         host: process.env.DB_HOST,
         user: process.env.DB_USERNAME,
         port: process.env.DB_PORT,

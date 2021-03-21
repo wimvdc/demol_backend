@@ -34,6 +34,7 @@ app.use(cors({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.disable('x-powered-by');
 
 app.use('/auth', require('./routes/security/auth'));
 app.use('/v1/groups', require('./routes/groups'));
