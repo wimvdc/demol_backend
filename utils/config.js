@@ -42,7 +42,7 @@ module.exports = {
         let round = currentWeekNumber() - 11;
         let now = new Date();
         if (now.getDay() == 0) {
-            if (now.getHours() >= 21 && now.getMinutes() > 45) {
+            if (now.getHours() >= 21 && now.getMinutes() > 30) {
                 round++;
             }
         }
@@ -54,7 +54,7 @@ module.exports = {
     isNormalVotingEnabled: () => {
         let now = new Date();
         if (now.getDay() == 0) {
-            if (now.getHours() == 20 || now.getHours() == 21) {
+            if (now.getHours() == 20 || (now.getHours() == 21 && now.getMinutes() < 30)) {
                 return false;
             }
         }
