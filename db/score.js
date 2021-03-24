@@ -14,9 +14,15 @@ exports.getGuessesForUser = function (userId, round) {
 
 exports.getCandidatesOut = function () {
     return db.executeQuery(`SELECT uuid FROM candidates
-                       WHERE isOut = 1`,[]);
+                       WHERE isOut = 1`, []);
 };
 
 exports.getAllUsers = function () {
-    return db.executeQuery(`SELECT channel, uuid FROM users`);
+    return db.executeQuery(`SELECT id, channel, uuid, available_points FROM users`);
+};
+
+exports.insertTempResult = function (userId, round, previousPoints, newPoints, plus, minus) {
+    return db.executeQuery(`INSERT INTO points_result
+                        (user_uuid, round, previous_points, new_points, plus, minus) VALUES (?,?,?,?,?,?);`
+        , [userId, round, previousPoints, newPoints, plus, minus]);
 };
