@@ -26,3 +26,13 @@ exports.insertTempResult = function (userId, round, previousPoints, newPoints, p
                         (user_uuid, round, previous_points, new_points, plus, minus) VALUES (?,?,?,?,?,?);`
         , [userId, round, previousPoints, newPoints, plus, minus]);
 };
+
+exports.getTempResultForRound = function (round) {
+    return db.executeQuery(`SELECT user_uuid, new_points FROM points_result
+                        WHERE round = ?`, [round]);
+};
+
+exports.updateUserScore = function (userId, newPoints) {
+    return db.executeQuery(`UPDATE users SET available_points = ? WHERE uuid = ?;`
+        , [newPoints, userId]);
+};
