@@ -2,7 +2,7 @@ const express = require('express');
 const webpush = require('web-push');
 webpush.setVapidDetails("mailto: wim.vdc@hotmail.com", process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE)
 const router = express.Router();
-const { push } = require("../utils/config");
+const { push, webbaseurl } = require("../utils/config");
 const db = require('../db/push');
 
 
@@ -39,10 +39,16 @@ router.get('/me', async (req, res, next) => {
   const result = await db.getSubscription(req.user.uuid)
   const payload = JSON.stringify({
     title: "De Mol '21 pronostiek",
-    icon: "/img/icons/android-icon-192x192.jpg",
-    image: "/img/vingerafdruk.png",
-    body: 'Het is gelukt!',
+    body: 'Je hebt nog 15 minuten om te stemmen!',
+    actions: [
+      {
+        action: 'mollen',
+        title: 'Ik wil stemmen!',
+        icon: '/img/icons/android-icon-192x192.jpg'
+      }]
   })
+
+  console.log(payload)
 
   const subscription = {
     endpoint: result[0].endpoint,
@@ -52,7 +58,6 @@ router.get('/me', async (req, res, next) => {
       auth: result[0].auth
     }
   }
-  console.log(subscription)
   webpush.sendNotification(subscription, payload)
     .then(result => console.log(result.statusCode))
     .catch(e => console.log(e.stack))
