@@ -38,6 +38,10 @@ module.exports = {
         profileFields: ['id', 'displayName']
 
     },
+    push: {
+        private: process.env.VAPID_PRIVATE,
+        public: process.env.VAPID_PUBLIC,
+    },
     getCurrentRound: () => {
         let round = currentWeekNumber() - 11;
         let now = new Date();
