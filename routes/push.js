@@ -10,27 +10,38 @@ router.get('/public', async (req, res, next) => {
   res.json(push.public);
 });
 
+router.post('/unsubscribe', async (req, res) => {
+  try {
+    await db.deleteSubscription(req.user.uuid);
+    res.status(200).end();
+  } catch (error) {
+    console.error(error)
+    res.status(500).end();
+  }
+});
+
 router.post('/subscribe', async (req, res) => {
   const subscription = req.body;
   await db.insertSubscription(subscription.endpoint, subscription.keys.p256dh, subscription.keys.auth, req.user.uuid)
   const payload = JSON.stringify({
-    title: 'De Mol - Herringer',
-    body: 'Je moet nog stemmen!',
+    title: "De Mol '21 pronostiek",
+    body: 'Push notificatie is actief!',
   })
 
   webpush.sendNotification(subscription, payload)
     .then(result => console.log(result.statusCode))
     .catch(e => console.log(e.stack))
 
-  res.status(200).json({ 'success': true })
+  res.status(201).end();
 });
 
 router.get('/me', async (req, res, next) => {
   const result = await db.getSubscription(req.user.uuid)
-  console.log(result)
   const payload = JSON.stringify({
-    title: 'Gewoon een test',
-    body: 'Stemmen!',
+    title: "De Mol '21 pronostiek",
+    icon: "/img/icons/android-icon-192x192.jpg",
+    image: "/img/vingerafdruk.png",
+    body: 'Het is gelukt!',
   })
 
   const subscription = {
