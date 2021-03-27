@@ -1,7 +1,15 @@
 let router = require('express').Router();
-const { serverurl } = require("../utils/config");
 const { isAdminLoggedIn } = require("../utils/middelware");
 let db = require('../db/score');
+
+router.get('/calculate/', isAdminLoggedIn, async (req, res, next) => {
+  const result = {
+    one: "/v1/score/calculate/temp",
+    two: "/v1/score/calculate/update"
+  }
+  res.json(result);
+});
+
 
 router.get('/calculate/temp', isAdminLoggedIn, async (req, res, next) => {
   try {
