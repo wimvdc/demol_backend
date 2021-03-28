@@ -42,9 +42,28 @@ module.exports = {
         private: process.env.VAPID_PRIVATE,
         public: process.env.VAPID_PUBLIC,
     },
+    getCurrentRoundv2: () => {
+        const rounds = [
+            new Date('2021-03-01T19:55:00'),
+            new Date('2021-03-28T19:55:00'),
+            new Date('2021-04-04T19:55:00'),
+            new Date('2021-04-11T19:55:00'),
+            new Date('2021-04-18T19:55:00'),
+            new Date('2021-04-25T19:55:00'),
+            new Date('2021-05-02T19:55:00'),
+            new Date('2021-05-07T19:55:00'),
+        ]
+        const now = new Date();
+        now.setHours(now.getHours() + (Math.abs(now.getTimezoneOffset() / 60)));
+        for (i = 1; i < rounds.length; i++) {
+            if ((now.getTime() <= rounds[i].getTime() && now.getTime() >= rounds[i - 1].getTime())) return i;
+        }
+        return 0;
+    },
     getCurrentRound: () => {
         let round = currentWeekNumber() - 11;
         let now = new Date();
+        now.setHours(now.getHours() + (Math.abs(now.getTimezoneOffset() / 60)));
         if (now.getDay() == 0) {
             if (now.getHours() >= 21 && now.getMinutes() >= 45) {
                 round++;
@@ -57,6 +76,7 @@ module.exports = {
     },
     isNormalVotingEnabled: () => {
         let now = new Date();
+        now.setHours(now.getHours() + (Math.abs(now.getTimezoneOffset() / 60)));
         if (now.getDay() == 0) {
             if (now.getHours() == 20 || (now.getHours() == 21 && now.getMinutes() < 45)) {
                 return false;

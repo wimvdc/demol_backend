@@ -1,6 +1,6 @@
 let express = require('express');
 let router = express.Router();
-const { getCurrentRound, isNormalVotingEnabled } = require("../utils/config");
+const { getCurrentRound, isNormalVotingEnabled, getFloep } = require("../utils/config");
 const db = require('../db/game');
 const { getUserByUuid } = require('../db/auth');
 const { getMyGroups } = require('../db/groups');
