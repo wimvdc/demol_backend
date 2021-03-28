@@ -63,13 +63,14 @@ module.exports = {
     getCurrentRound: () => {
         let round = currentWeekNumber() - 11;
         let now = new Date();
+        return 2;
         //now.setHours(now.getHours() + (Math.abs(now.getTimezoneOffset() / 60)));
-        if (now.getDay() == 0) {
+        /*if (now.getDay() == 0) {
             if ((now.getHours() >= 21 && now.getMinutes() >= 20) || now.getHours >= 22) {
                 round++;
             }
         }
-        return round;
+        return round;*/
     },
     getLastRound: () => {
         return 7;
