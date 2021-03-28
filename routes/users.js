@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db/users');
+const dbpush = require('../db/push');
 
 router.get('/', async (req, res, next) => {
   const me = await db.getMe(req.user.uuid);
-  res.json(me[0]);
+  const push = await dbpush.getSubscription(req.user.uuid)
+  res.json({ alias: me[0].alias, push: push.length == 1 });
 });
 
 router.put('/', async (req, res, next) => {
