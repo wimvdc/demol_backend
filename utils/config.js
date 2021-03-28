@@ -65,7 +65,7 @@ module.exports = {
         let now = new Date();
         //now.setHours(now.getHours() + (Math.abs(now.getTimezoneOffset() / 60)));
         if (now.getDay() == 0) {
-            if (now.getHours() >= 21 && now.getMinutes() >= 20) {
+            if ((now.getHours() >= 21 && now.getMinutes() >= 20) || now.getHours >= 22) {
                 round++;
             }
         }
