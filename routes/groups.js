@@ -1,9 +1,9 @@
 let router = require('express').Router();
-const { isLoggedIn } = require("../utils/middelware");
+const { isLoggedIn, cache } = require("../utils/middelware");
 const { webbaseurl } = require("../utils/config");
 let db = require('../db/groups');
 
-router.get('/', isLoggedIn, async (req, res, next) => {
+router.get('/', isLoggedIn, cache(30), async (req, res, next) => {
   const result = await db.getAllGroups(req.user.uuid);
   res.json(result);
 });
@@ -14,7 +14,6 @@ router.post('/', isLoggedIn, async (req, res, next) => {
     if (result.length >= 5) {
       res.status(400).json({ code: 7600 });
     } else {
-      //await db.insertGroup(req.body.name, req.body.public ? 1 : 0, req.user.uuid);
       await db.insertGroup(req.body.name, 0, req.user.uuid);
       res.status(201).end();
     }

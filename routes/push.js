@@ -2,11 +2,12 @@ const express = require('express');
 const webpush = require('web-push');
 webpush.setVapidDetails("mailto: wim.vdc@hotmail.com", process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE)
 const router = express.Router();
-const { push, webbaseurl } = require("../utils/config");
+const { push, } = require("../utils/config");
+const { cache } = require("../utils/middelware");
 const db = require('../db/push');
 
 
-router.get('/public', async (req, res, next) => {
+router.get('/public', cache(120), async (req, res, next) => {
   res.json(push.public);
 });
 
@@ -47,8 +48,6 @@ router.get('/me', async (req, res, next) => {
         icon: '/img/icons/android-icon-192x192.jpg'
       }]
   })
-
-  console.log(payload)
 
   const subscription = {
     endpoint: result[0].endpoint,
