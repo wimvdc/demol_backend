@@ -1,31 +1,28 @@
 let express = require('express');
 let router = express.Router();
-const { getCurrentRound, isNormalVotingEnabled, getFloep } = require("../utils/config");
+const { getCurrentRound, isNormalVotingEnabled } = require("../utils/config");
 const db = require('../db/game');
 const { getUserByUuid } = require('../db/auth');
 const { getMyGroups } = require('../db/groups');
 
-router.get('/round', (req, res, next) => {
-    res.json({ "round": getCurrentRound() });
-});
-
 router.get('/info', async (req, res, next) => {
-    let format = req.query.format;
-    let spend = await db.getSpendPointsForUser(getCurrentRound(), req.user.uuid);
+    const format = req.query.format;
+    const round = getCurrentRound();
+    let spend = await db.getSpendPointsForUser(round, req.user.uuid);
     spend = spend[0].spend;
     let spendable = await db.getSpendablePoints(req.user.uuid);
     spendable = spendable[0].available_points;
     let response = {
-        round: getCurrentRound(),
+        round: round,
         spend,
         spendable,
         voteopen: isNormalVotingEnabled(),
     }
     if (format === "full") {
-        let user = await getUserByUuid(req.user.uuid);
-        let groups = await getMyGroups(req.user.uuid);
+        const user = await getUserByUuid(req.user.uuid);
+        const groups = await getMyGroups(req.user.uuid);
         response = {
-            round: getCurrentRound(),
+            round: round,
             spend,
             spendable,
             user: user[0],

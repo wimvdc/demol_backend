@@ -1,6 +1,18 @@
 require("dotenv").config();
 const currentWeekNumber = require("current-week-number");
 
+//Use index as round number
+const rounds = [
+    new Date('2021-03-01T19:55:00'),
+    new Date('2021-03-28T19:55:00'),
+    new Date('2021-04-04T19:55:00'),
+    new Date('2021-04-11T19:55:00'),
+    new Date('2021-04-18T19:55:00'),
+    new Date('2021-04-25T19:55:00'),
+    new Date('2021-05-02T19:55:00'),
+    new Date('2021-05-07T19:55:00'),
+]
+
 module.exports = {
     port: process.env.PORT,
     hostname: process.env.HOSTNAME,
@@ -42,47 +54,41 @@ module.exports = {
         private: process.env.VAPID_PRIVATE,
         public: process.env.VAPID_PUBLIC,
     },
-    getCurrentRoundv2: () => {
-        const rounds = [
-            new Date('2021-03-01T19:55:00'),
-            new Date('2021-03-28T19:55:00'),
-            new Date('2021-04-04T19:55:00'),
-            new Date('2021-04-11T19:55:00'),
-            new Date('2021-04-18T19:55:00'),
-            new Date('2021-04-25T19:55:00'),
-            new Date('2021-05-02T19:55:00'),
-            new Date('2021-05-07T19:55:00'),
-        ]
+    getCurrentRound: () => {
         const now = new Date();
-        now.setHours(now.getHours() + (Math.abs(now.getTimezoneOffset() / 60)));
         for (i = 1; i < rounds.length; i++) {
-            if ((now.getTime() <= rounds[i].getTime() && now.getTime() >= rounds[i - 1].getTime())) return i;
+            if ((now.getTime() <= rounds[i].getTime() && now.getTime() >= rounds[i - 1].getTime())){
+                //console.log(`${rounds[i-1]} and ${rounds[i]}`)
+                return i;
+            } 
         }
         return 0;
     },
-    getCurrentRound: () => {
+    /*getCurrentRoundOld: () => {
         let round = currentWeekNumber() - 11;
-        let now = new Date();
-        return 2;
-        //now.setHours(now.getHours() + (Math.abs(now.getTimezoneOffset() / 60)));
-        /*if (now.getDay() == 0) {
+        const now = new Date();
+        if (now.getDay() == 0) {
             if ((now.getHours() >= 21 && now.getMinutes() >= 20) || now.getHours >= 22) {
                 round++;
             }
         }
-        return round;*/
-    },
+        return round;
+    },*/
     getLastRound: () => {
         return 7;
     },
     isNormalVotingEnabled: () => {
-        let now = new Date();
+        const now = new Date();
         if (now.getDay() == 0) {
             if (now.getHours() == 20 || (now.getHours() == 21 && now.getMinutes() < 30)) {
                 return false;
             }
         }
         return 0 < module.exports.getCurrentRound() && module.exports.getCurrentRound() < module.exports.getLastRound();
+    },
+    isEndgameVotingEnabled: () => {
+    
+        return module.exports.getCurrentRound() == module.exports.getLastRound();
     }
 };
 
