@@ -11,10 +11,10 @@ module.exports = {
     isAdminLoggedIn: (req, res, next) => {
         if (req.user.uuid === '18dfd515-8758-11eb-bec5-42010a840056' &&
             req.user.id === '117164228083016343480') {
-            console.log("next")
+            console.log("admin incoming!")
             return next()
         } else {
-            console.log('redirect')
+            console.error('admin trying to foefel??')
             res.redirect(webbaseurl + "/login")
         }
     },
@@ -23,7 +23,7 @@ module.exports = {
             let key = '__exprs__' + req.originalUrl || req.url
             let cachedBody = mcache.get(key)
             if (cachedBody) {
-                console.log(cachedBody)
+                console.log("hit! " + key)
                 res.send(cachedBody)
                 return;
             } else {

@@ -7,7 +7,7 @@ const { cache } = require("../utils/middelware");
 const db = require('../db/push');
 
 
-router.get('/public', cache(120), async (req, res, next) => {
+router.get('/public', cache(600), async (req, res, next) => {
   res.json(push.public);
 });
 
