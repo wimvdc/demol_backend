@@ -23,6 +23,7 @@ module.exports = {
             let key = '__exprs__' + req.originalUrl || req.url
             let cachedBody = mcache.get(key)
             if (cachedBody) {
+                console.log(cachedBody)
                 res.send(cachedBody)
                 return;
             } else {
