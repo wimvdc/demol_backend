@@ -25,24 +25,35 @@ router.post('/', isLoggedIn, async (req, res, next) => {
 
 router.get('/:groupid', isLoggedIn, async (req, res, next) => {
   const groupid = req.params.groupid;
-  const result = await db.getGroupByUuid(groupid);
-  if (result.length != 1)
-    res.status(404).end();
-  else {
-    let group = result[0];
-    group.share = `${webbaseurl}/group/invite/${group.uuid}`;
-    delete group.share_code;
-    res.json(result[0]);
+  if(groupid === 'public'){
+    res.json({name: "Publiek", uuid: "public"});
+  }else{
+    const result = await db.getGroupByUuid(groupid);
+    if (result.length != 1)
+      res.status(404).end();
+    else {
+      let group = result[0];
+      group.share = `${webbaseurl}/group/invite/${group.uuid}`;
+      delete group.share_code;
+      res.json(result[0]);
+    }
   }
+
 });
 
 router.get('/:groupid/users', isLoggedIn, async (req, res, next) => {
   const groupid = req.params.groupid;
-  const result = await db.getUsersInGroup(groupid);
-  if (result.length === 0)
-    res.status(404).end();
-  else
+  if(groupid === 'public'){
+    const result = await db.getAllUsers();
     res.json(result);
+  }else{
+    const result = await db.getUsersInGroup(groupid);
+    if (result.length === 0)
+      res.status(404).end();
+    else
+      res.json(result);
+  }
+ 
 });
 
 /*router.put('/:groupid', isLoggedIn, async (req, res, next) => {

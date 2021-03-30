@@ -20,3 +20,8 @@ exports.getSubscription = function (uuid) {
         FROM push_subscriptions WHERE user_uuid = ?`, [uuid]);
 };
 
+exports.getAllSubscriptions = function () {
+    return db.executeQuery(`SELECT endpoint, p256, auth
+        FROM push_subscriptions`);
+};
+

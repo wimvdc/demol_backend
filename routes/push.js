@@ -2,7 +2,7 @@ const express = require('express');
 const webpush = require('web-push');
 webpush.setVapidDetails("mailto: wim.vdc@hotmail.com", process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE)
 const router = express.Router();
-const { push, } = require("../utils/config");
+const { push } = require("../utils/config");
 const { cache } = require("../utils/middelware");
 const db = require('../db/push');
 
