@@ -6,7 +6,7 @@ const dbpush = require('../db/push');
 router.get('/', async (req, res, next) => {
   const me = await db.getMe(req.user.uuid);
   const push = await dbpush.getSubscription(req.user.uuid)
-  res.json({ alias: me[0].alias, public: me[0].public, push: push.length == 1 });
+  res.json({ alias: me[0].alias, public: me[0].public, push: push.length == 1, publicName: me[0].publicName });
 });
 
 router.put('/', async (req, res, next) => {

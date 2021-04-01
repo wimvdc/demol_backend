@@ -1,7 +1,8 @@
 const db = require("./utils");
 
 exports.getMe = function (userUuid) {
-    return db.executeQuery(`SELECT IFNULL(nickname, "") alias, isPublic public
+    return db.executeQuery(`SELECT IF(ISNULL(nickname), CONCAT(firstName," ",UPPER(LEFT (lastName, 1))), nickname)  publicName, 
+            IFNULL(nickname, "") alias, isPublic public
             FROM users WHERE uuid = ?;
     `, [userUuid]);
 };
