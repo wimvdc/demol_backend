@@ -21,7 +21,7 @@ exports.insertUserinGroup = (groupUuid, userUuid) => {
 exports.getAllGroups = (userUuid) => {
     //return db.executeQuery(`SELECT name, public,  IF(public = 1, uuid, ''), uuid 
     //    FROM groupz ORDER by name;`);
-    return db.executeQuery(`SELECT 'Publiek' name, (SELECT COUNT(*) FROM users) members, 'public' uuid
+    return db.executeQuery(`SELECT 'Publieke groep' name, (SELECT COUNT(*) FROM users) members, 'public' uuid
                             UNION
                             SELECT name, 
                             (SELECT COUNT(id) FROM users_in_groupz u WHERE uuid = group_uuid) members, 
@@ -51,8 +51,10 @@ exports.getUsersInGroup = (uuid) => {
     ORDER BY available_points desc;`, [uuid]);
 };
 
-exports.getAllUsers = () => {
-    return db.executeQuery(`SELECT IF(ISNULL(nickname), CONCAT(firstName," ",UPPER(LEFT (lastName, 1))), nickname)  nickname, available_points availablepoints FROM users u
+exports.getAllPublicUsers = () => {
+    return db.executeQuery(`SELECT IF(ISNULL(nickname), CONCAT(firstName," ",UPPER(LEFT (lastName, 1))), nickname)  nickname, 
+                                   available_points availablepoints, DENSE_RANK() OVER (ORDER BY available_points DESC) AS ranking 
+    FROM users u WHERE isPublic = 1
     ORDER BY available_points desc;`);
 };
 

@@ -6,18 +6,19 @@ const dbpush = require('../db/push');
 router.get('/', async (req, res, next) => {
   const me = await db.getMe(req.user.uuid);
   const push = await dbpush.getSubscription(req.user.uuid)
-  res.json({ alias: me[0].alias, push: push.length == 1 });
+  res.json({ alias: me[0].alias, public: me[0].public, push: push.length == 1 });
 });
 
 router.put('/', async (req, res, next) => {
   const nickname = sanitizeString(req.body.alias);
+  const isPublic = req.body.public;
   if (!nickname || nickname.length > 55 || nickname.length < 3) {
     res.status(400).json({ code: 430 });
   }
   const exists = await db.getByNickname(nickname, req.user.uuid)
   if (exists.length == 0) {
     try {
-      await db.updateUser(nickname, req.user.uuid)
+      await db.updateUser(nickname, isPublic, req.user.uuid)
       const me = await db.getMe(req.user.uuid);
       res.json(me[0]);
     } catch (err) {

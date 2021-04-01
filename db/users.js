@@ -1,7 +1,7 @@
 const db = require("./utils");
 
 exports.getMe = function (userUuid) {
-    return db.executeQuery(`SELECT IFNULL(nickname, "") alias
+    return db.executeQuery(`SELECT IFNULL(nickname, "") alias, isPublic public
             FROM users WHERE uuid = ?;
     `, [userUuid]);
 };
@@ -12,8 +12,8 @@ exports.getByNickname = function (nickname, userUuid) {
     `, [nickname, userUuid]);
 };
 
-exports.updateUser = function (nickname, userUuid) {
+exports.updateUser = function (nickname, showInPublic, userUuid) {
     return db.executeQuery(`UPDATE users
-        SET nickname = ? WHERE uuid = ?;
-    `, [nickname, userUuid]);
+        SET nickname = ?, isPublic = ? WHERE uuid = ?;
+    `, [nickname, showInPublic, userUuid]);
 };

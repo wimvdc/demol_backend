@@ -43,7 +43,7 @@ router.get('/:groupid', isLoggedIn, cache(30), async (req, res, next) => {
 router.get('/:groupid/users', isLoggedIn, cache(30), async (req, res, next) => {
   const groupid = req.params.groupid;
   if (groupid === 'public') {
-    const result = await db.getAllUsers();
+    const result = await db.getAllPublicUsers();
     res.json(result);
   } else {
     const result = await db.getUsersInGroup(groupid);
