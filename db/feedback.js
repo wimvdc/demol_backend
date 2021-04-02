@@ -1,13 +1,13 @@
 const db = require("./utils");
 
-exports.insertFeedback = (uuid, feedback) => {
+exports.insertFeedback = (feedback, email, uuid) => {
     return db.executeQuery(`INSERT INTO feedback
-        (user_uuid, feedback) VALUES (?,?);
-    `, [uuid, feedback]);
+        (user_uuid, feedback, email) VALUES (?,?,?);
+    `, [uuid, feedback, email]);
 };
 
 
-exports.getUserFeedbackCount = (uuid) => {
+exports.getUserFeedback = (uuid) => {
     return db.executeQuery(`SELECT id FROM feedback 
     WHERE user_uuid = ?;`, [uuid]);
 };
