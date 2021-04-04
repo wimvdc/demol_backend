@@ -44,7 +44,7 @@ router.get('/calculate/temp', isAdminLoggedIn, async (req, res, next) => {
 
 router.get('/calculate/update', isAdminLoggedIn, async (req, res, next) => {
   const round = 2;
-  const temp = await db.getTempResultForRound(1);
+  const temp = await db.getTempResultForRound(round);
   for (let score of temp) {
     db.updateUserScore(score.user_uuid, score.new_points);
   }
