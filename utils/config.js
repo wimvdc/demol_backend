@@ -5,7 +5,7 @@ const currentWeekNumber = require("current-week-number");
 const rounds = [
     new Date('2021-03-01T19:55:00'),
     new Date('2021-03-28T19:55:00'),
-    new Date('2021-04-04T19:55:00'),
+    new Date('2021-04-04T20:00:00'),
     new Date('2021-04-11T19:55:00'),
     new Date('2021-04-18T19:55:00'),
     new Date('2021-04-25T19:55:00'),
@@ -57,10 +57,10 @@ module.exports = {
     getCurrentRound: () => {
         const now = new Date();
         for (i = 1; i < rounds.length; i++) {
-            if ((now.getTime() <= rounds[i].getTime() && now.getTime() >= rounds[i - 1].getTime())){
+            if ((now.getTime() <= rounds[i].getTime() && now.getTime() >= rounds[i - 1].getTime())) {
                 //console.log(`${rounds[i-1]} and ${rounds[i]}`)
                 return i;
-            } 
+            }
         }
         return 0;
     },
@@ -87,7 +87,7 @@ module.exports = {
         return 0 < module.exports.getCurrentRound() && module.exports.getCurrentRound() < module.exports.getLastRound();
     },
     isEndgameVotingEnabled: () => {
-    
+
         return module.exports.getCurrentRound() == module.exports.getLastRound();
     }
 };
