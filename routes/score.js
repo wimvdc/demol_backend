@@ -17,7 +17,7 @@ router.get('/calculate/temp', isAdminLoggedIn, async (req, res, next) => {
     let losers = [];
     out.forEach(element => { losers.push(element.uuid) });
     const users = await db.getAllUsers();
-    const round = 1;
+    const round = 2;
     for (let user of users) {
       let spendable = user.available_points
       const guesses = await db.getGuessesForUser(user.uuid, round);
@@ -43,7 +43,7 @@ router.get('/calculate/temp', isAdminLoggedIn, async (req, res, next) => {
 });
 
 router.get('/calculate/update', isAdminLoggedIn, async (req, res, next) => {
-  const round = 1;
+  const round = 2;
   const temp = await db.getTempResultForRound(1);
   for (let score of temp) {
     db.updateUserScore(score.user_uuid, score.new_points);
