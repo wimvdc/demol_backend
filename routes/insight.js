@@ -3,22 +3,27 @@ const router = express.Router();
 const db = require('../db/insight');
 const { cache } = require("../utils/middelware");
 
-router.get('/points/:who', cache(2), async (req, res, next) => {
-  const who = req.params.who;
-  const round = Number(req.query.round);
-  if (who && round) {
-    if (who === 'all') {
-      const result = await db.pointsPerRound(round);
-      res.json(result);
-    }
-    if (who === 'me') {
-      const result = await db.pointsPerRoundPerUser(round, req.user.uuid);
-      res.json(result);
-    }
-  } else {
-    res.json([]);
-  }
+router.get('/points/all', cache(90), async (req, res, next) => {
+  const result = await getPointsPerRound(req, "all")
+  res.json(result);
 });
+
+router.get('/points/me', async (req, res, next) => {
+  const result = await getPointsPerRound(req, "me")
+  res.json(result)
+});
+
+async function  getPointsPerRound(req, who){
+  const round = Number(req.query.round);
+  if (round && who === 'me') {
+    return await db.pointsPerRoundPerUser(round, req.user.uuid);
+} else if(round && who === 'all') {
+  return await db.pointsPerRound(round);
+} else {
+  return [];
+}
+
+}
 
 
 module.exports = router;
