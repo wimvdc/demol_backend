@@ -33,6 +33,11 @@ router.get('/info', async (req, res, next) => {
     res.json(response);
 });
 
+router.get('/round', async (req, res, next) => {
+    const round = getCurrentRound();
+    res.json({ round });
+});
+
 router.get('/mol', async (req, res, next) => {
     try {
         let result = await db.getPointGuessForUser(getCurrentRound(), req.user.uuid);
