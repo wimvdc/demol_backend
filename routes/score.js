@@ -5,7 +5,8 @@ let db = require('../db/score');
 router.get('/calculate/', isAdminLoggedIn, async (req, res, next) => {
   const result = {
     one: "/v1/score/calculate/temp",
-    two: "/v1/score/calculate/update"
+    two: "/v1/score/calculate/update",
+    last: "/v1/score/calculate/final"
   }
   res.json(result);
 });

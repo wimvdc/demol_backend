@@ -1,29 +1,5 @@
 const db = require("./utils");
 
-/* old school logic
-exports.upsertGuessForUser = function (molid, round, userid) {
-    return db.executeQuery(`INSERT INTO guesses
-        (mol_uuid, round, user_uuid) VALUES (?,?,?) 
-        ON DUPLICATE KEY UPDATE
-                        mol_uuid = ?,
-                        round = ?,
-                        user_uuid = ?
-    `, [molid, round, userid, molid, round, userid]);
-};
-
-exports.getGuessForUser = function (round, userid) {
-    return db.executeQuery(`SELECT mol_uuid FROM guesses 
-        WHERE round = ? and user_uuid = ?`
-        , [round, userid]);
-};
-
-exports.getDetailedGuessForUser = function (round, userid) {
-    return db.executeQuery(`SELECT name, c.uuid FROM guesses g, candidates c 
-        WHERE round = ? and user_uuid = ? and mol_uuid = c.uuid;`
-        , [round, userid]);
-};
-*/
-
 exports.getSpendPointsForUser = function (round, userid) {
     return db.executeQuery(`SELECT SUM(p.points) spend
         FROM point_guesses p 
@@ -59,4 +35,21 @@ exports.deletePointGuessForUser = function (round, userId) {
     return db.executeQuery(`DELETE FROM point_guesses
                        WHERE round = ? and user_uuid = ?`,
         [round, userId]);
+};
+
+exports.getEndgameGuess = function (userid) {
+    return db.executeQuery(`SELECT mol_uuid uuid, mol_name
+        FROM endgame WHERE user_uuid = ?`
+        , [userid]);
+};
+
+exports.upsertEndgameGuess = function (userid, molid, molname) {
+    return db.executeQuery(`INSERT INTO endgame
+        (user_uuid, mol_uuid, mol_name) VALUES (?,?,?) 
+        ON DUPLICATE KEY UPDATE
+                        user_uuid = ?,
+                        mol_uuid = ?,
+                        mol_name = ?
+    `
+        , [userid, molid, molname, userid, molid, molname]);
 };

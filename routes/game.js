@@ -1,6 +1,6 @@
 let express = require('express');
 let router = express.Router();
-const { getCurrentRound, isNormalVotingEnabled } = require("../utils/config");
+const { getCurrentRound, isNormalVotingEnabled, isEndgameVotingEnabled } = require("../utils/config");
 const db = require('../db/game');
 const { getUserByUuid } = require('../db/auth');
 const { getMyGroups } = require('../db/groups');
@@ -17,6 +17,7 @@ router.get('/info', async (req, res, next) => {
         spend,
         spendable,
         voteopen: isNormalVotingEnabled(),
+        endgameopen: isEndgameVotingEnabled(),
     }
     if (format === "full") {
         const user = await getUserByUuid(req.user.uuid);
@@ -27,6 +28,7 @@ router.get('/info', async (req, res, next) => {
             spendable,
             user: user[0],
             voteopen: isNormalVotingEnabled(),
+            endgameopen: isEndgameVotingEnabled(),
             groups
         };
     }
@@ -69,6 +71,39 @@ router.post('/mol', async (req, res, next) => {
                 });
                 res.status(200).end();
             }
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).end();
+    }
+});
+
+router.get('/endgame', async (req, res, next) => {
+    try {
+        if (!isEndgameVotingEnabled()) {
+            res.status(400).json({ code: 420 });
+        } else {
+            let result = await db.getEndgameGuess(req.user.uuid);
+            if (result.length == 0)
+                res.status(404).end();
+            else
+                res.json(result[0]);
+        }
+    } catch (err) {
+        console.error(err);
+        res.status(500).end();
+    }
+});
+
+router.post('/endgame', async (req, res, next) => {
+    try {
+        if (!isEndgameVotingEnabled()) {
+            res.status(400).json({ code: 420 });
+        } else if (req.body && req.body.uuid && req.body.name) {
+            await db.upsertEndgameGuess(req.user.uuid, req.body.uuid, req.body.name)
+            res.status(200).end();
+        } else {
+            res.status(400).json({ code: 420 });
         }
     } catch (err) {
         console.error(err);
