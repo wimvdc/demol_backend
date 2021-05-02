@@ -1,6 +1,7 @@
 let router = require('express').Router();
 const { isAdminLoggedIn } = require("../utils/middelware");
 let db = require('../db/score');
+const round = 6;
 
 router.get('/calculate/', isAdminLoggedIn, async (req, res, next) => {
   const result = {
@@ -18,7 +19,6 @@ router.get('/calculate/temp', isAdminLoggedIn, async (req, res, next) => {
     let losers = [];
     out.forEach(element => { losers.push(element.uuid) });
     const users = await db.getAllUsers();
-    const round = 3;
     for (let user of users) {
       let spendable = user.available_points
       const guesses = await db.getGuessesForUser(user.uuid, round);
@@ -44,7 +44,6 @@ router.get('/calculate/temp', isAdminLoggedIn, async (req, res, next) => {
 });
 
 router.get('/calculate/update', isAdminLoggedIn, async (req, res, next) => {
-  const round = 3;
   const temp = await db.getTempResultForRound(round);
   for (let score of temp) {
     db.updateUserScore(score.user_uuid, score.new_points);
