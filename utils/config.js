@@ -10,7 +10,8 @@ const rounds = [
     new Date('2021-04-18T20:00:00'),
     new Date('2021-04-25T20:00:00'),
     new Date('2021-05-02T20:00:00'),
-    new Date('2021-05-07T20:00:00'),
+    new Date('2021-05-09T20:00:00'),
+    new Date('2021-05-21T20:00:00'),
 ]
 
 module.exports = {
@@ -64,16 +65,6 @@ module.exports = {
         }
         return 0;
     },
-    /*getCurrentRoundOld: () => {
-        let round = currentWeekNumber() - 11;
-        const now = new Date();
-        if (now.getDay() == 0) {
-            if ((now.getHours() >= 21 && now.getMinutes() >= 20) || now.getHours >= 22) {
-                round++;
-            }
-        }
-        return round;
-    },*/
     getLastRound: () => {
         return 7;
     },
@@ -87,7 +78,6 @@ module.exports = {
         return 0 < module.exports.getCurrentRound() && module.exports.getCurrentRound() < module.exports.getLastRound();
     },
     isEndgameVotingEnabled: () => {
-
         return module.exports.getCurrentRound() == module.exports.getLastRound();
     }
 };
