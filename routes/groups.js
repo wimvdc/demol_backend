@@ -53,7 +53,7 @@ router.get("/:groupid/users", isLoggedIn, cache(30), async (req, res, next) => {
 
 router.get("/invite/:invitecode", async (req, res, next) => {
   const invitecode = req.params.invitecode;
-  console.log(req.path);
+
   if (!req.user?.uuid) {
     res.redirect(`${webbaseurl}/login?referer=${webbaseurl}${req.path}`);
   }

@@ -1,3 +1,9 @@
+# Run
+
+```bash
+npm run dev
+```
+
 # Build & deploy
 
 ```bash

@@ -58,7 +58,7 @@ module.exports = {
     const now = new Date();
     for (i = 1; i < rounds.length; i++) {
       if (now.getTime() <= rounds[i].getTime() && now.getTime() >= rounds[i - 1].getTime()) {
-        //console.log(`${rounds[i-1]} and ${rounds[i]}`)
+        //console.info(`${rounds[i-1]} and ${rounds[i]}`)
         return i;
       }
     }

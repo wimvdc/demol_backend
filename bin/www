@@ -20,7 +20,7 @@ if (cluster.isMaster) {
   let server = http.createServer(app);
   server.listen(port);
   server.on("error", onError);
-  console.log("Server started on port: ", port);
+  console.info("Server started on port: ", port);
 }
 
 /**

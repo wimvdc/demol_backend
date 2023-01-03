@@ -30,8 +30,8 @@ router.post("/subscribe", async (req, res) => {
 
   webpush
     .sendNotification(subscription, payload)
-    .then((result) => console.log(result.statusCode))
-    .catch((e) => console.log(e.stack));
+    .then((result) => console.error(result.statusCode))
+    .catch((e) => console.error(e.stack));
 
   res.status(201).end();
 });
@@ -60,8 +60,8 @@ router.get("/me", async (req, res, next) => {
   // };
   // webpush
   //   .sendNotification(subscription, payload)
-  //   .then((result) => console.log(result.statusCode))
-  //   .catch((e) => console.log(e.stack));
+  //   .then((result) => console.info(result.statusCode))
+  //   .catch((e) => console.error(e.stack));
 
   res.status(200).json({ success: true });
 });

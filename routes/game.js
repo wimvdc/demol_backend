@@ -34,7 +34,7 @@ router.get("/info", async (req, res, next) => {
       groups,
     };
   }
-  console.log(response);
+
   res.json(response);
 });
 
