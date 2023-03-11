@@ -1,7 +1,7 @@
 let createError = require("http-errors");
 let express = require("express");
 //let cookieParser = require('cookie-parser');
-let logger = require("morgan");
+let morgan = require("morgan");
 let cors = require("cors");
 let passport = require("passport");
 let session = require("express-session");
@@ -12,7 +12,8 @@ const { mysqlPool } = require("./db/utils");
 const { isLoggedIn } = require("./utils/middelware");
 const { webbaseurl } = require("./utils/config");
 
-app.use(logger("dev"));
+let accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), { flags: "a" });
+app.use(morgan("dev", { stream: accessLogStream }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(
