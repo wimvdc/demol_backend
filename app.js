@@ -2,6 +2,8 @@ let createError = require("http-errors");
 let express = require("express");
 //let cookieParser = require('cookie-parser');
 let morgan = require("morgan");
+var path = require("path");
+var rfs = require("rotating-file-stream"); // version 2.x
 let cors = require("cors");
 let passport = require("passport");
 let session = require("express-session");
@@ -12,7 +14,10 @@ const { mysqlPool } = require("./db/utils");
 const { isLoggedIn } = require("./utils/middelware");
 const { webbaseurl } = require("./utils/config");
 
-let accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), { flags: "a" });
+let accessLogStream = rfs.createStream("access.log", {
+  interval: "1d", // rotate daily
+  path: path.join(__dirname, "log"),
+});
 app.use(morgan("dev", { stream: accessLogStream }));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
