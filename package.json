@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon ./bin/www",
-    "start": "node ./bin/www",
-    "cron": "node ./bin/cron.js"
+    "start": "node ./bin/www"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

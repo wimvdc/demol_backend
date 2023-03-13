@@ -50,10 +50,6 @@ module.exports = {
     callbackURL: process.env.FB_AUTH_CALLBACK,
     profileFields: ["id", "displayName"],
   },
-  push: {
-    private: process.env.VAPID_PRIVATE,
-    public: process.env.VAPID_PUBLIC,
-  },
   getCurrentRound: () => {
     const now = new Date();
     for (i = 1; i < rounds.length; i++) {

@@ -1,18 +1,18 @@
 const express = require("express");
-const webpush = require("web-push");
-webpush.setVapidDetails("mailto: wim.vdc@hotmail.com", process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE);
+//const webpush = require("web-push");
+//webpush.setVapidDetails("mailto: wim.vdc@hotmail.com", process.env.VAPID_PUBLIC, process.env.VAPID_PRIVATE);
 const router = express.Router();
 const { push } = require("../utils/config");
 const { cache } = require("../utils/middelware");
 const db = require("../db/push");
 
 router.get("/public", cache(600), async (req, res, next) => {
-  res.json(push.public);
+  //res.json(push.public);
 });
 
 router.post("/unsubscribe", async (req, res) => {
   try {
-    await db.deleteSubscription(req.user.uuid);
+    //await db.deleteSubscription(req.user.uuid);
     res.status(200).end();
   } catch (error) {
     console.error(error);
@@ -21,7 +21,7 @@ router.post("/unsubscribe", async (req, res) => {
 });
 
 router.post("/subscribe", async (req, res) => {
-  const subscription = req.body;
+  /*   const subscription = req.body;
   await db.insertSubscription(subscription.endpoint, subscription.keys.p256dh, subscription.keys.auth, req.user.uuid);
   const payload = JSON.stringify({
     title: "De Mol '21 pronostiek",
@@ -31,7 +31,7 @@ router.post("/subscribe", async (req, res) => {
   webpush
     .sendNotification(subscription, payload)
     .then((result) => console.error(result.statusCode))
-    .catch((e) => console.error(e.stack));
+    .catch((e) => console.error(e.stack)); */
 
   res.status(201).end();
 });
