@@ -6,6 +6,6 @@ services:
       context: .
       dockerfile: Dockerfile
       target: mol-backend
-      image: mol-backend:dev
+    image: mol-backend:dev
     ports:
       - 3060:3003
