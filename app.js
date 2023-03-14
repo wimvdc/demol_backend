@@ -10,13 +10,14 @@ let session = require("express-session");
 let MySQLStore = require("connect-mysql")(session);
 let bodyParser = require("body-parser");
 let app = express();
+const logger = require("./utils/logger");
 const { mysqlPool } = require("./db/utils");
 const { isLoggedIn } = require("./utils/middelware");
 const { webbaseurl } = require("./utils/config");
 
 let accessLogStream = rfs.createStream("access.log", {
   interval: "1d", // rotate daily
-  path: path.join(__dirname, "log"),
+  path: path.join(__dirname, "logs"),
 });
 app.use(morgan("dev", { stream: accessLogStream }));
 app.use(express.json());
@@ -63,10 +64,10 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.locals.error = req.app.get("env") === "dev" ? err : {};
 
   res.status(err.status || 500);
-  console.error(err);
+  logger.error(err);
   res.send();
 });
 

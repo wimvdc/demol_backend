@@ -19,7 +19,7 @@ module.exports = {
   },
   cache: (duration) => {
     return (req, res, next) => {
-      let key = "__exprs__" + req.originalUrl || req.url;
+      const key = "__exprs__" + req.originalUrl || req.url;
       let cachedBody = mcache.get(key);
       if (cachedBody) {
         res.send(cachedBody);
