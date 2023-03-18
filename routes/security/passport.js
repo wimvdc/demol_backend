@@ -57,6 +57,11 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (user, done) {
   db.getUserIdByOpenId(user.id).then((result) => {
+    if (!result[0]) {
+      logger.error("User not found in DB");
+      logger.error(user);
+      return done(null, false);
+    }
     user.uuid = result[0].uuid;
     done(null, user);
   });
