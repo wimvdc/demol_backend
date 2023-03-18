@@ -3,15 +3,15 @@ const currentWeekNumber = require("current-week-number");
 
 //Use index as round number
 const rounds = [
-  new Date("2022-12-29T20:00:00"),
-  new Date("2023-01-07T20:00:00"),
-  new Date("2023-04-04T20:00:00"),
-  new Date("2023-04-11T20:00:00"),
-  new Date("2023-04-18T20:00:00"),
-  new Date("2023-04-25T20:00:00"),
-  new Date("2023-05-02T20:00:00"),
-  new Date("2023-05-09T20:00:00"),
-  new Date("2023-05-21T20:00:00"),
+  new Date("2023-03-19T20:00:00"),
+  new Date("2023-03-26T20:00:00"),
+  new Date("2023-04-02T20:00:00"),
+  new Date("2023-04-09T20:00:00"),
+  new Date("2023-04-16T20:00:00"),
+  new Date("2023-04-22T20:00:00"),
+  new Date("2023-04-30T20:00:00"),
+  new Date("2023-05-07T20:00:00"),
+  new Date("2023-05-14T20:00:00"),
 ];
 
 module.exports = {
