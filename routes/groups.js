@@ -32,7 +32,7 @@ router.get("/:groupid", isLoggedIn, cache(30), async (req, res, next) => {
     if (result.length != 1) res.status(404).end();
     else {
       let group = result[0];
-      group.share = `${webbaseurl}/group/invite/${group.uuid}`;
+      group.share = `${webbaseurl.replace("/#", "")}/group/invite/${group.uuid}`;
       delete group.share_code;
       res.json(result[0]);
     }
