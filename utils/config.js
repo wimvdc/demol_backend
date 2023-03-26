@@ -3,15 +3,15 @@ const currentWeekNumber = require("current-week-number");
 
 //Use index as round number
 const rounds = [
-  new Date("2023-03-19T20:00:00"),
-  new Date("2023-03-26T20:00:00"),
-  new Date("2023-04-02T20:00:00"),
-  new Date("2023-04-09T20:00:00"),
-  new Date("2023-04-16T20:00:00"),
-  new Date("2023-04-22T20:00:00"),
-  new Date("2023-04-30T20:00:00"),
-  new Date("2023-05-07T20:00:00"),
-  new Date("2023-05-14T20:00:00"),
+  new Date("2023-03-19T20:00:00+0100"),
+  new Date("2023-03-26T20:00:00+0200"), //summertime
+  new Date("2023-04-02T20:00:00+0200"), //summertime
+  new Date("2023-04-09T20:00:00+0200"), //summertime
+  new Date("2023-04-16T20:00:00+0200"), //summertime
+  new Date("2023-04-23T20:00:00+0200"), //summertime
+  new Date("2023-04-30T20:00:00+0200"), //summertime
+  new Date("2023-05-07T20:00:00+0200"), //summertime
+  new Date("2023-05-14T20:00:00+0200"), //summertime
 ];
 
 module.exports = {
@@ -53,25 +53,23 @@ module.exports = {
   getCurrentRound: () => {
     const now = new Date();
     for (i = 1; i < rounds.length; i++) {
-      if (now.getTime() <= rounds[i].getTime() && now.getTime() >= rounds[i - 1].getTime()) {
-        //console.info(`${rounds[i-1]} and ${rounds[i]}`)
+      if (now <= rounds[i] && now >= rounds[i - 1]) {
         return i;
       }
     }
     return 0;
   },
   getLastRound: () => {
-    return 7;
+    return 8;
   },
   isNormalVotingEnabled: () => {
-    //const now = new Date();
-    return true;
-    // if (now.getDay() == 0) {
-    //   if (now.getHours() == 20 || (now.getHours() == 21 && now.getMinutes() < 30)) {
-    //     return false;
-    //   }
-    // }
-    // return 0 < module.exports.getCurrentRound() && module.exports.getCurrentRound() < module.exports.getLastRound();
+    const now = new Date();
+    if (now.getDay() == 0) {
+      if (now.getHours() == 20 || (now.getHours() == 21 && now.getMinutes() < 30)) {
+        return false;
+      }
+    }
+    return 0 < module.exports.getCurrentRound() && module.exports.getCurrentRound() < module.exports.getLastRound();
   },
   isEndgameVotingEnabled: () => {
     return module.exports.getCurrentRound() == module.exports.getLastRound();
