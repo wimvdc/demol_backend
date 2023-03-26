@@ -64,12 +64,13 @@ module.exports = {
   },
   isNormalVotingEnabled: () => {
     const now = new Date();
-    if (now.getDay() == 0) {
-      if (now.getHours() == 20 || (now.getHours() == 21 && now.getMinutes() < 30)) {
-        return false;
-      }
-    }
-    return 0 < module.exports.getCurrentRound() && module.exports.getCurrentRound() < module.exports.getLastRound();
+    return false;
+    // if (now.getDay() == 0) {
+    //   if (now.getHours() == 20 || (now.getHours() == 21 && now.getMinutes() < 30)) {
+    //     return false;
+    //   }
+    // }
+    // return 0 < module.exports.getCurrentRound() && module.exports.getCurrentRound() < module.exports.getLastRound();
   },
   isEndgameVotingEnabled: () => {
     return module.exports.getCurrentRound() == module.exports.getLastRound();

@@ -31,7 +31,7 @@ const votingTimes = [
   [new Date("2023-03-19T19:59:59+0100"), 0, false],
   [new Date("2023-03-19T20:00:01+0100"), 1, false],
   [new Date("2023-03-19T21:29:59+0100"), 1, false],
-  [new Date("2023-03-19T21:30:00+0100"), 1, true],
+  [new Date("2023-03-19T21:3x0:00+0100"), 1, true],
   [new Date("2023-03-26T19:29:59+0200"), 1, true], //summertime
   [new Date("2023-03-26T20:00:01+0200"), 2, false], //summertime
   [new Date("2023-03-26T21:29:59+0200"), 2, false], //summertime
