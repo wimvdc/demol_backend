@@ -64,7 +64,7 @@ module.exports = {
   },
   isNormalVotingEnabled: () => {
     const now = new Date();
-    return false;
+    return true;
     // if (now.getDay() == 0) {
     //   if (now.getHours() == 20 || (now.getHours() == 21 && now.getMinutes() < 30)) {
     //     return false;
