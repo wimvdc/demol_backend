@@ -17,7 +17,6 @@ router.get("/info", async (req, res, next) => {
     spend,
     spendable,
     voteopen: isNormalVotingEnabled(),
-    endgameopen: isEndgameVotingEnabled(),
     finished: round > getLastRound(),
   };
   if (format === "full") {
@@ -29,7 +28,6 @@ router.get("/info", async (req, res, next) => {
       spendable,
       user: user[0],
       voteopen: isNormalVotingEnabled(),
-      endgameopen: isEndgameVotingEnabled(),
       finished: round > getLastRound(),
       groups,
     };
