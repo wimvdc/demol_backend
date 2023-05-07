@@ -60,7 +60,7 @@ module.exports = {
     return 0;
   },
   getLastRound: () => {
-    return 8;
+    return 7;
   },
   isNormalVotingEnabled: () => {
     const now = new Date();
