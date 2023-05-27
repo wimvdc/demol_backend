@@ -11,6 +11,10 @@ docker-compose --env-file .env build mol-backend
 docker-compose up -d mol-backend
 ```
 
+## Database schema
+
+You can find the DDL scipt in `./scripts/schema.sql`
+
 ## .env
 
 ```
@@ -18,8 +22,6 @@ PORT=
 DB_USERNAME=
 DB_PASSWORD=
 DB_SCHEMA=
-# DB_HOST=
-# DB_PORT=
 DB_HOST=
 DB_PORT=
 
