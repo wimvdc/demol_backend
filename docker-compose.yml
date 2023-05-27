@@ -1,0 +1,11 @@
+version: "3"
+services:
+  mol-backend:
+    image: expressjs-docker-node
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: mol-backend
+    image: mol-backend:dev
+    ports:
+      - 3060:3003

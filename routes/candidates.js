@@ -1,14 +1,14 @@
-let router = require('express').Router();
+let router = require("express").Router();
 const { getCurrentRound } = require("../utils/config");
-let db = require('../db/candidates');
+let db = require("../db/candidates");
 
-router.get('/', async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
-    const result = await db.getCandidatesForGuess(getCurrentRound(), req.user.uuid)
+    const result = await db.getCandidatesForGuess(getCurrentRound(), req.user.uuid);
     res.json(result);
   } catch (error) {
-    console.log(req.user.uuid)
-    console.log(error)
+    console.error(req.user.uuid);
+    console.error(error);
   }
 });
 
